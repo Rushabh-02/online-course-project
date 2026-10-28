@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ course.name }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="#">OnlineCourse</a>
+    </div>
+</nav>
+
+<main class="container py-5">
+    <div class="card shadow-sm mb-4">
+        {% if course.image %}
+        <img src="{{ course.image }}" class="card-img-top"
+             alt="{{ course.name }}" style="max-height: 320px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+            <h1 class="card-title">{{ course.name }}</h1>
+            <p class="card-text">{{ course.description }}</p>
+        </div>
+    </div>
+
+    <h2 class="mb-3">Course Lessons</h2>
+    <div class="row g-3">
+        {% for lesson in course.lessons.all %}
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ lesson.title }}</h5>
+                    <p class="card-text">{{ lesson.content }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>No lessons have been added to this course yet.</p>
+        {% endfor %}
+    </div>
+
+    <h2 class="mt-5 mb-3">Available Exams</h2>
+    {% for exam in course.exams.all %}
+    <div class="card mb-3">
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <span>{{ exam.title }}</span>
+            <a class="btn btn-primary"
+               href="{% url 'submit' exam.id %}">Start Exam</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>No exams are available yet.</p>
+    {% endfor %}
+</main>
+</body>
+</html>
